@@ -2404,7 +2404,11 @@ func (t *Loki) initDataObjConsumer() (services.Service, error) {
 		serverutil.RecoveryHTTPMiddleware,
 	)
 	t.Server.HTTP.
-		Methods(http.MethodGet, http.MethodPost, http.MethoDelete).
+		Methods(http.MethodGet, http.MethodPost, http.MethodDelete).
+		Path("/dataobj-consumer/prepare-downscale").
+		Handler(httpMiddleware.Wrap(http.HandlerFunc(t.dataObjConsumer.PrepareDownscaleHandler)))
+	t.Server.HTTP.
+		Methods(http.MethodGet, http.MethodPost, http.MethodDelete).
 		Path("/dataobj-consumer/prepare-delayed-downscale").
 		Handler(httpMiddleware.Wrap(http.HandlerFunc(t.dataObjConsumer.PrepareDelayedDownscaleHandler)))
 
